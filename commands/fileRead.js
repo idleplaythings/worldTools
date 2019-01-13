@@ -1,5 +1,4 @@
-const { WorldReader } = require("./worldRepository/WorldReader.js");
-const { getIndex } = require("./worldRepository/FileTilePosition");
+const { WorldReader } = require("../src/worldRepository/WorldReader.js");
 
 const { performance } = require("perf_hooks");
 

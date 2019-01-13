@@ -1,8 +1,8 @@
-const { WorldBuilder } = require("./worldRepository/WorldBuilder.js");
+import WorldBuilder from "../src/worldBuilder/WorldBuilder.mjs";
 
 const worldBuilder = new WorldBuilder(512);
 
-worldBuilder.create("inputTerrain512.png");
+worldBuilder.create("inputTerrainHeightFail.png");
 
 /*
 const fs = require("fs");
