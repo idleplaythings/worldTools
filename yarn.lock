@@ -389,6 +389,12 @@ browser-resolve@^1.11.3:
   dependencies:
     resolve "1.1.7"
 
+browserify-zlib@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/browserify-zlib/-/browserify-zlib-0.2.0.tgz#2869459d9aa3be245fe8fe2ca1f46e2e7f54d73f"
+  dependencies:
+    pako "~1.0.5"
+
 bser@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/bser/-/bser-2.0.0.tgz#9ac78d3ed5d915804fd87acb158bc797147a1719"
@@ -2296,6 +2302,10 @@ p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
 
+pako@~1.0.5:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.8.tgz#6844890aab9c635af868ad5fecc62e8acbba3ea4"
+
 parse-data-uri@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/parse-data-uri/-/parse-data-uri-0.2.0.tgz#bf04d851dd5c87b0ab238e5d01ace494b604b4c9"
@@ -2382,6 +2392,12 @@ pkg-dir@^2.0.0:
 pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
+
+pngjs3@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/pngjs3/-/pngjs3-5.0.0.tgz#fff21ff17b011f9ce547909c01e132a97f972a14"
+  dependencies:
+    browserify-zlib "^0.2.0"
 
 pngjs@^3.3.3:
   version "3.3.3"

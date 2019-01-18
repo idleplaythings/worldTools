@@ -10,6 +10,7 @@
   "dependencies": {
     "get-pixels": "^3.3.2",
     "ndarray": "^1.0.18",
+    "pngjs3": "^5.0.0",
     "ws": "^6.1.2"
   },
   "devDependencies": {

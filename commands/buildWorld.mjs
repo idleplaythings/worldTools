@@ -2,7 +2,7 @@ import WorldBuilder from "../src/worldBuilder/WorldBuilder.mjs";
 
 const worldBuilder = new WorldBuilder(512);
 
-worldBuilder.create("inputTerrainHeightFail.png");
+worldBuilder.create("boxAndCross.png");
 
 /*
 const fs = require("fs");

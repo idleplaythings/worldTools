@@ -1,7 +1,8 @@
 import getPixels from "get-pixels";
 import path from "path";
-import { TileBinarySet } from "../model/tile";
-import { getSlopeType, isIllegalHeight } from "./SlopeBuilder";
+import fs from "fs";
+import { TileBinarySet, TileTypes } from "../model/tile";
+import { getSlopeType } from "./SlopeBuilder";
 
 const __dirname = path
   .dirname(decodeURI(new URL(import.meta.url).pathname))
@@ -33,32 +34,44 @@ class WorldBuilder {
     this.sourceImage = new TileBinarySet(image);
     const size = this.sourceImage.size;
 
-    console.log(this.sourceImage.currentView.shape);
+    this.resultImage = this.sourceImage.cloneEmpty();
 
-    for (let x = 0; x < this.sourceImage.size; x++) {
-      for (let y = 0; y < this.sourceImage.size; y++) {
-        if (
-          x > 0 &&
-          y > 0 &&
-          x < size &&
-          y < size &&
-          isIllegalHeight({ x, y }, this.sourceImage)
-        ) {
-          console.log("illegal height", x, y);
+    //console.log(this.sourceImage.currentView.shape);
+
+    //this.sourceImage.zoomTo3({ x: 2, y: 2 });
+    //console.log(this.sourceImage.currentView.get(1, 1, 0));
+    //console.log(this.sourceImage.getHeight({ x: 1, y: 1 }));
+
+    console.log(this.sourceImage.currentView.data);
+
+    for (let y = 0; y < this.sourceImage.size; y++) {
+      for (let x = 0; x < this.sourceImage.size; x++) {
+        this.resultImage.setHeight(
+          { x, y },
+          this.sourceImage.getHeight({ x, y })
+        );
+
+        this.resultImage.setType({ x, y }, TileTypes.type.REGULAR);
+        this.resultImage.setVisual({ x, y }, TileTypes.visual.GRASS);
+
+        if (x > 0 && y > 0 && x < size - 1 && y < size - 1) {
+          const slopeName = getSlopeType({ x, y }, this.sourceImage);
+          if (slopeName) {
+            console.log("slope", slopeName);
+            this.resultImage.setType({ x, y }, TileTypes.type[slopeName]);
+          }
         }
       }
     }
+
+    this.writeToImage(this.resultImage.getData());
   }
 
-  writeToImage() {
-    var img =
-      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0" +
-      "NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO" +
-      "3gAAAABJRU5ErkJggg==";
-    // strip off the data: url prefix to get just the base64-encoded bytes
-    var data = img.replace(/^data:image\/\w+;base64,/, "");
-    var buf = new Buffer(data, "base64");
-    fs.writeFile("image.png", buf);
+  writeToImage(data) {
+    fs.writeFileSync(
+      path.resolve(__dirname, "../../data/" + "result.bin"),
+      data
+    );
   }
 }
 
