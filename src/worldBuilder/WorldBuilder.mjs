@@ -42,8 +42,6 @@ class WorldBuilder {
     //console.log(this.sourceImage.currentView.get(1, 1, 0));
     //console.log(this.sourceImage.getHeight({ x: 1, y: 1 }));
 
-    console.log(this.sourceImage.currentView.data);
-
     for (let y = 0; y < this.sourceImage.size; y++) {
       for (let x = 0; x < this.sourceImage.size; x++) {
         this.resultImage.setHeight(
@@ -57,13 +55,13 @@ class WorldBuilder {
         if (x > 0 && y > 0 && x < size - 1 && y < size - 1) {
           const slopeName = getSlopeType({ x, y }, this.sourceImage);
           if (slopeName) {
-            console.log("slope", slopeName);
             this.resultImage.setType({ x, y }, TileTypes.type[slopeName]);
           }
         }
       }
     }
 
+    console.log(this.resultImage);
     this.writeToImage(this.resultImage.getData());
   }
 

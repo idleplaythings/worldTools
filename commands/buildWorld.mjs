@@ -2,7 +2,7 @@ import WorldBuilder from "../src/worldBuilder/WorldBuilder.mjs";
 
 const worldBuilder = new WorldBuilder(512);
 
-worldBuilder.create("boxAndCross.png");
+worldBuilder.create("boxAndCross1024.png");
 
 /*
 const fs = require("fs");
