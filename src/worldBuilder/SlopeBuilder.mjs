@@ -44,11 +44,16 @@ const illegalSlopes = {
 };
 
 const testSlope = (tileSet, slope) => {
-  const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
+  const baseHeight = tileSet.isWater({ x: 1, y: 1 })
+    ? 0
+    : tileSet.getHeight({ x: 1, y: 1 });
 
   for (let y = 0; y < 3; y++) {
     for (let x = 0; x < 3; x++) {
-      const height = tileSet.getHeight({ x, y });
+      const height = tileSet.isWater({ x, y })
+        ? 0
+        : tileSet.getHeight({ x, y });
+
       const slopeGuide = slope.get(y, x);
 
       if (slopeGuide === -1 && height >= baseHeight) {

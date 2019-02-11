@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { TileBinarySet, TileTypes } from "../model/tile";
 import { getSlopeType } from "./SlopeBuilder";
+import WorldImage from "./WorldImage";
 
 const __dirname = path
   .dirname(decodeURI(new URL(import.meta.url).pathname))
@@ -31,7 +32,7 @@ class WorldBuilder {
 
   async create(filePath) {
     const image = await loadImage(filePath);
-    this.sourceImage = new TileBinarySet(image);
+    this.sourceImage = new WorldImage(image);
     const size = this.sourceImage.size;
 
     this.resultImage = this.sourceImage.cloneEmpty();
@@ -44,6 +45,13 @@ class WorldBuilder {
 
     for (let y = 0; y < this.sourceImage.size; y++) {
       for (let x = 0; x < this.sourceImage.size; x++) {
+        if (this.sourceImage.isWater({ x, y })) {
+          this.resultImage.setType({ x, y }, TileTypes.type.WATER);
+          this.resultImage.setHeight({ x, y }, 0);
+
+          continue;
+        }
+
         this.resultImage.setHeight(
           { x, y },
           this.sourceImage.getHeight({ x, y })
@@ -61,7 +69,12 @@ class WorldBuilder {
       }
     }
 
-    console.log(this.resultImage);
+    /*
+    binaryChunk.zoomToChunk(position, chunkSize);
+  const tiles = tileFactory.create(position, chunkSize, binaryChunk);
+  binaryChunk.resetZoom();
+  */
+
     this.writeToImage(this.resultImage.getData());
   }
 
