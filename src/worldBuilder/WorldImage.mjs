@@ -13,8 +13,8 @@ class WorldImage extends TileBinarySet {
     const color = this.getColor(position);
 
     return (
-      (color.r == 0 && color.g === 85 && color.b === 139) ||
-      (color.r == 0 && color.g === 132 && color.b === 214)
+      (color.g === 85 && color.b === 139) ||
+      (color.g === 132 && color.b === 214)
     );
   }
 }

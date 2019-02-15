@@ -37,22 +37,19 @@ const slopeTypes = {
 };
 
 //1 means higher than base
-const illegalSlopes = {
-  DIAGONAL_OPPOSITES: createNDArray([-1, 0, -1, 0, 0, 0, -1, 0, -1]),
-  OPPOSITES_W_E: createNDArray([0, 0, 0, -1, 0, -1, 0, 0, 0]),
-  OPPOSITES_N_S: createNDArray([0, -1, 0, 0, 0, 0, 0, -1, 0])
-};
+const legalSlopes = [
+  createNDArray([1, 1, 0, 1, 0, 0, 0, 0, 0]),
+  createNDArray([0, 0, 0, 0, 0, 1, 0, 1, 1]),
+  createNDArray([0, 0, 0, 1, 0, 0, 1, 1, 0]),
+  createNDArray([0, 1, 1, 0, 0, 1, 0, 0, 0])
+];
 
 const testSlope = (tileSet, slope) => {
-  const baseHeight = tileSet.isWater({ x: 1, y: 1 })
-    ? 0
-    : tileSet.getHeight({ x: 1, y: 1 });
+  const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
 
   for (let y = 0; y < 3; y++) {
     for (let x = 0; x < 3; x++) {
-      const height = tileSet.isWater({ x, y })
-        ? 0
-        : tileSet.getHeight({ x, y });
+      const height = tileSet.getHeight({ x, y });
 
       const slopeGuide = slope.get(y, x);
 
@@ -69,6 +66,37 @@ const testSlope = (tileSet, slope) => {
   return true;
 };
 
+const testTooSteepSlope = tileSet => {
+  const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
+
+  for (let y = 0; y < 3; y++) {
+    for (let x = 0; x < 3; x++) {
+      if (tileSet.getHeight({ x, y }) + 1 < baseHeight) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
+const testIllegalSlope = tileSet => {
+  const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
+
+  const ret = legalSlopes.every(slope => {
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (slope.get(y, x) === 1 && tileSet.getHeight({ x, y }) < baseHeight) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  });
+
+  return ret;
+};
 /*
 const testIllegalSlope = (tileSet, slopeName) => {
   const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
@@ -124,4 +152,4 @@ const getSlopeType = (position, tileSet) => {
   return result;
 };
 
-export { getSlopeType };
+export { getSlopeType, testTooSteepSlope, testIllegalSlope };
