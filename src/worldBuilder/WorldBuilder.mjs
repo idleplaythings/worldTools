@@ -65,6 +65,8 @@ class WorldBuilder {
           const slopeName = getSlopeType(position, this.sourceImage);
           if (slopeName) {
             this.resultImage.setType(position, TileTypes.type[slopeName]);
+          } else {
+            this.setProp(this.sourceImage, this.resultImage, position);
           }
         }
       }
@@ -72,6 +74,8 @@ class WorldBuilder {
 
     this.writeToImage(this.resultImage.getData());
   }
+
+  setProp(sourceImage, resultImage, position) {}
 
   setTileVisual(sourceImage, resultImage, position) {
     if (sourceImage.isWater(position)) {
