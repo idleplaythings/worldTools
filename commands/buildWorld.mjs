@@ -2,7 +2,7 @@ import WorldBuilder from "../src/worldBuilder/WorldBuilder.mjs";
 
 const worldBuilder = new WorldBuilder(512);
 
-worldBuilder.create("islands1026.png");
+worldBuilder.create("islands1026");
 
 /*
 const fs = require("fs");

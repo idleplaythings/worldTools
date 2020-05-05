@@ -1,4 +1,4 @@
-import TileBinarySet from "../model/tile/TileBinarySet";
+import TileBinarySet from "../model/tile/TileBinarySet.mjs";
 
 class WorldImage extends TileBinarySet {
   getColor(position) {
@@ -12,10 +12,18 @@ class WorldImage extends TileBinarySet {
   isWater(position) {
     const color = this.getColor(position);
 
-    return (
-      (color.g === 85 && color.b === 139) ||
-      (color.g === 132 && color.b === 214)
-    );
+    return color.g === 132 && color.b === 214;
+  }
+
+  isDeepWater(position) {
+    const color = this.getColor(position);
+
+    return color.g === 85 && color.b === 139;
+  }
+
+  isBedrockSoil(position) {
+    const color = this.getColor(position);
+    return color.r === 25 && color.g === 41 && color.b === 0;
   }
 }
 

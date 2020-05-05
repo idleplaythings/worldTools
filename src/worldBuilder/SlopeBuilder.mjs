@@ -1,6 +1,6 @@
 import ndarray from "ndarray";
 
-const createNDArray = list => ndarray(new Int8Array(list), [3, 3]);
+const createNDArray = (list) => ndarray(new Int8Array(list), [3, 3]);
 
 /*
 //1 means tile must be higher than middle. 0 means don't care, -1 tile must NOT be higher
@@ -33,7 +33,7 @@ const slopeTypes = {
   SLOPE_NORTHWEST: createNDArray([-1, -1, 0, -1, 1, 1, 0, 1, 1]),
   SLOPE_NORTHEAST: createNDArray([0, -1, -1, 1, 1, -1, 1, 1, 0]),
   SLOPE_SOUTHWEST: createNDArray([0, 1, 1, -1, 1, 1, -1, -1, 0]),
-  SLOPE_SOUTHEAST: createNDArray([1, 1, 0, 1, 1, -1, 0, -1, -1])
+  SLOPE_SOUTHEAST: createNDArray([1, 1, 0, 1, 1, -1, 0, -1, -1]),
 };
 
 //1 means higher than base
@@ -41,7 +41,7 @@ const legalSlopes = [
   createNDArray([1, 1, 0, 1, 0, 0, 0, 0, 0]),
   createNDArray([0, 0, 0, 0, 0, 1, 0, 1, 1]),
   createNDArray([0, 0, 0, 1, 0, 0, 1, 1, 0]),
-  createNDArray([0, 1, 1, 0, 0, 1, 0, 0, 0])
+  createNDArray([0, 1, 1, 0, 0, 1, 0, 0, 0]),
 ];
 
 const testSlope = (tileSet, slope) => {
@@ -66,7 +66,7 @@ const testSlope = (tileSet, slope) => {
   return true;
 };
 
-const testTooSteepSlope = tileSet => {
+const testTooSteepSlope = (tileSet) => {
   const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
 
   for (let y = 0; y < 3; y++) {
@@ -80,10 +80,10 @@ const testTooSteepSlope = tileSet => {
   return false;
 };
 
-const testIllegalSlope = tileSet => {
+const testIllegalSlope = (tileSet) => {
   const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
 
-  const ret = legalSlopes.every(slope => {
+  const ret = legalSlopes.every((slope) => {
     for (let y = 0; y < 3; y++) {
       for (let x = 0; x < 3; x++) {
         if (slope.get(y, x) === 1 && tileSet.getHeight({ x, y }) < baseHeight) {
@@ -143,7 +143,7 @@ const isIllegalSlope = (position, tileSet) => {
 
 const getSlopeType = (position, tileSet) => {
   tileSet.zoomTo3(position);
-  const result = Object.keys(slopeTypes).find(slopeName => {
+  const result = Object.keys(slopeTypes).find((slopeName) => {
     const slope = slopeTypes[slopeName];
     return testSlope(tileSet, slope);
   });
