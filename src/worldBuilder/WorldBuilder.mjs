@@ -8,6 +8,7 @@ import {
   testIllegalSlope,
 } from "./SlopeBuilder.mjs";
 import WorldImages from "./WorldImages.mjs";
+import { getFactory } from "./factory/index.mjs";
 
 const __dirname = path
   .dirname(decodeURI(new URL(import.meta.url).pathname))
@@ -71,20 +72,52 @@ class WorldBuilder {
         }
 
         if (x > 0 && y > 0 && x < size - 1 && y < size - 1) {
-          const slopeName = getSlopeType(position, this.worldImages.height);
-          if (slopeName) {
+          if (getSlopeType(position, this.worldImages.height)) {
             this.resultImage.setType(position, TileTypes.type.SLOPE);
-          } else {
-            this.setProp(this.worldImages, this.resultImage, position);
           }
         }
       }
     }
 
+    this.boulderPass();
+    this.rockPass();
+
     this.writeToImage(this.resultImage.getData());
   }
 
-  setProp(sourceImage, resultImage, position) {}
+  pass(functionName) {
+    const size = this.worldImages.getSize();
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const position = { x, y };
+        const type = this.resultImage.getType(position);
+
+        if (type !== TileTypes.type.REGULAR) {
+          continue;
+        }
+
+        const factory = getFactory(
+          this.worldImages,
+          this.resultImage,
+          position
+        );
+        if (!factory) {
+          return;
+        }
+
+        factory[functionName](this.worldImages, this.resultImage, position);
+      }
+    }
+  }
+
+  boulderPass() {
+    this.pass("createBoulder");
+  }
+
+  rockPass() {
+    this.pass("createRock");
+  }
 
   setTileVisual(sourceImage, resultImage, position) {
     if (sourceImage.biome.isWater(position)) {
@@ -92,7 +125,7 @@ class WorldBuilder {
     } else if (sourceImage.biome.isDeepWater(position)) {
       resultImage.setVisual(position, TileTypes.visual.UNDERWATER_DEEP);
     } else if (sourceImage.biome.isBedrockSoil(position)) {
-      resultImage.setVisual(position, TileTypes.visual.UNDERWATER_DEEP);
+      resultImage.setVisual(position, TileTypes.visual.BEDROCK_SOIL);
     } else {
       resultImage.setVisual(position, TileTypes.visual.BEDROCK);
     }

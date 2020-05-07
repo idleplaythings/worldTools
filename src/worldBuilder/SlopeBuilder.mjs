@@ -44,26 +44,20 @@ const legalSlopes = [
   createNDArray([0, 1, 1, 0, 0, 1, 0, 0, 0]),
 ];
 
-const testSlope = (tileSet, slope) => {
+const testSlope = (tileSet) => {
   const baseHeight = tileSet.getHeight({ x: 1, y: 1 });
 
   for (let y = 0; y < 3; y++) {
     for (let x = 0; x < 3; x++) {
       const height = tileSet.getHeight({ x, y });
 
-      const slopeGuide = slope.get(y, x);
-
-      if (slopeGuide === -1 && height >= baseHeight) {
-        return false;
-      }
-
-      if (slopeGuide === 1 && height < baseHeight) {
-        return false;
+      if (height !== baseHeight) {
+        return true;
       }
     }
   }
 
-  return true;
+  return false;
 };
 
 const testTooSteepSlope = (tileSet) => {
@@ -143,10 +137,8 @@ const isIllegalSlope = (position, tileSet) => {
 
 const getSlopeType = (position, tileSet) => {
   tileSet.zoomTo3(position);
-  const result = Object.keys(slopeTypes).find((slopeName) => {
-    const slope = slopeTypes[slopeName];
-    return testSlope(tileSet, slope);
-  });
+
+  const result = testSlope(tileSet);
 
   tileSet.resetZoom();
   return result;
